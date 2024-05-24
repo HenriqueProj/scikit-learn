@@ -1184,7 +1184,7 @@ class OneHotEncoder(_BaseEncoder):
 
         return X_tr
 
-    def get_feature_names_out(self, input_features=None):
+    def get_feature_names_out(self, input_features=None, separator="_"):
         """Get output feature names for transformation.
 
         Parameters
@@ -1199,6 +1199,11 @@ class OneHotEncoder(_BaseEncoder):
             - If `input_features` is an array-like, then `input_features` must
               match `feature_names_in_` if `feature_names_in_` is defined.
 
+        separator: a char, default="_"
+
+            - It uses `_` as the default separator, but allows the user to
+              manually change it
+
         Returns
         -------
         feature_names_out : ndarray of str objects
@@ -1211,7 +1216,7 @@ class OneHotEncoder(_BaseEncoder):
             for i, _ in enumerate(self.categories_)
         ]
 
-        name_combiner = self._check_get_feature_name_combiner()
+        name_combiner = self._check_get_feature_name_combiner(separator)
         feature_names = []
         for i in range(len(cats)):
             names = [name_combiner(input_features[i], t) for t in cats[i]]
@@ -1219,9 +1224,9 @@ class OneHotEncoder(_BaseEncoder):
 
         return np.array(feature_names, dtype=object)
 
-    def _check_get_feature_name_combiner(self):
+    def _check_get_feature_name_combiner(self, separator):
         if self.feature_name_combiner == "concat":
-            return lambda feature, category: feature + "_" + str(category)
+            return lambda feature, category: feature + separator + str(category)
         else:  # callable
             dry_run_combiner = self.feature_name_combiner("feature", "category")
             if not isinstance(dry_run_combiner, str):

@@ -208,6 +208,33 @@ def test_one_hot_encoder_custom_feature_name_combiner():
         enc.get_feature_names_out()
 
 
+def test_one_hot_encoder_feature_name_separator():
+    """Check the behaviour of `get_feature_names_out` with a specific separator"""
+
+    enc = OneHotEncoder()
+    X = [
+        ["Male", 1, "girl"],
+        ["Female", 41, "girl"],
+        ["Male", 51, "boy"],
+    ]
+
+    enc.fit(X)
+    feature_names = enc.get_feature_names_out(separator="@")
+
+    assert_array_equal(
+        [
+            "x0@Female",
+            "x0@Male",
+            "x1@1",
+            "x1@41",
+            "x1@51",
+            "x2@boy",
+            "x2@girl",
+        ],
+        feature_names,
+    )
+
+
 def test_one_hot_encoder_set_params():
     X = np.array([[1, 2]]).T
     oh = OneHotEncoder()
