@@ -474,10 +474,10 @@ def davies_bouldin_score(X, labels):
     prefer_skip_nested_validation=True,
 )
 def pbm_index_score(X, labels):
-    """Compute the PBM score.
+    """Compute the PBM index score.
 
     The PBM index score is calculated using the distances between the points
-    and their barycenters and the distances between the barycenters themselves.
+    and their barycenter, and the max distance between the centroids themselves.
 
     The minimum score is zero, with higher values indicating better clustering.
 
@@ -500,7 +500,8 @@ def pbm_index_score(X, labels):
     .. [1] Pakhira, Malay K.; Bandyopadhyay, Sanghamitra; Maulik, Ujjwal (2002).
        `"Validity index for crisp and fuzzy clusters"
        <https://doi.org/10.1016/j.patcog.2003.06.005>`__.
-       Elsevier B.V. # TODO: COMPLETE JOURNAL
+       Pattern Recognition
+       Volume 37 (3): 487-501
 
     Examples
     --------
@@ -523,7 +524,7 @@ def pbm_index_score(X, labels):
 
     check_number_of_labels(n_labels, n_samples)
 
-    # Intra-cluster distances
+    # Calculate the intra-cluster distances
     intra_dists = np.zeros(n_labels)
     centroids = np.zeros((n_labels, len(X[0])), dtype=float)
     for k in range(n_labels):
@@ -549,7 +550,7 @@ def pbm_index_score(X, labels):
 
     # Matrix of distances between centroids (DK)
 
-    # Save a list for itering all possible cluster pairs
+    # Save a list to iterate through all possible cluster pairs
     all_cluster_pairs = np.array(
         [(i, j) for i in range(n_labels) for j in range(0, i + 1)]
     )
@@ -563,6 +564,7 @@ def pbm_index_score(X, labels):
 
     intercentroid_distances += intercentroid_distances.T
 
+    # The centroid's distance to himself is set as -1 so that it's never used
     intercentroid_distances[np.eye(len(intercentroid_distances)) > 0] = -1
 
     # Maximum separation between a pair of clusters

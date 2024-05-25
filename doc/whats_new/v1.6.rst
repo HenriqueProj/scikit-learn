@@ -68,6 +68,13 @@ Changelog
     :pr:`123456` by :user:`Joe Bloggs <joeongithub>`.
     where 123455 is the *pull request* number, not the issue number.
 
+:mod:`sklearn.metrics`
+......................
+
+- |Feature| Added a new clustering metric PBM index, implemented in
+  :func:`pbm_index_score`, for which higher values indicate a better clustering.
+  :pr:`29111` by :user:`Henrique Caroço <HenriqueProj>` and :user:`Luís Calado <LC1243>`.
+
 Thanks to everyone who has contributed to the maintenance and improvement of
 the project since version 1.5, including:
 
