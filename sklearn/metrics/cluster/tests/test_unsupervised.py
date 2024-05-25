@@ -441,4 +441,23 @@ def test_pbm_index_score():
     assert pbm_index_score(X, labels) == pytest.approx(
         (1 / 4 * (40 * np.sqrt(3.05)) / (30 + 5 * np.sqrt(2)) * np.sqrt(10)), abs=0.001
     )
-    # FIXME: remove
+
+
+def test_pbm_index_score2():
+    """Check that PBM index provides a higher score for a better number of clusters"""
+    assert_raises_on_only_one_label(pbm_index_score)
+    assert_raises_on_all_points_same_cluster(pbm_index_score)
+
+    # Data where the clustering is better with 3 clusters than with 4
+    X = (
+        [[1, 1], [3, 1], [1, 2]] * 5
+        + [[4, 3], [5, 4], [3, 3]] * 5
+        + [[9, 10], [8, 8]] * 5
+    )
+
+    # Apply pbm_index_score with 3 and 4 clusters, respectively
+    labels3 = [0] * 15 + [1] * 15 + [2] * 10
+
+    labels4 = [0] * 10 + [1] * 10 + [2] * 10 + [3] * 10
+
+    assert pbm_index_score(X, labels3) > pbm_index_score(X, labels4)
