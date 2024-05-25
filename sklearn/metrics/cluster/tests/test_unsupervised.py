@@ -441,3 +441,4 @@ def test_pbm_index_score():
     assert pbm_index_score(X, labels) == pytest.approx(
         (1 / 4 * (40 * np.sqrt(3.05)) / (30 + 5 * np.sqrt(2)) * np.sqrt(10)), abs=0.001
     )
+    # FIXME: remove
